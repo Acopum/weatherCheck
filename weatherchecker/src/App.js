@@ -44,6 +44,8 @@ class App extends React.Component {
     if(city && country){
       if(dataToday.main){
         let counter = 0;
+        let dateDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let week5Days = [];
         let temp5Days = [];
         let weather5Days = [];
         let desc5Days = [];
@@ -56,6 +58,7 @@ class App extends React.Component {
             let next = new Date(now);
             next.setDate(now.getDate()+i);
             let tomorrow = next.getFullYear()+'-'+(next.getMonth()+1)+'-'+(next.getDate());
+            week5Days.push(dateDays[next.getDay()])
             next5Days.push(tomorrow);
           }
           if(data5Day.list[i].dt_txt.startsWith(next5Days[counter])){
@@ -66,6 +69,7 @@ class App extends React.Component {
           }
         }
 
+        console.log(week5Days);
         console.log(next5Days);
         console.log(temp5Days);
         console.log(weather5Days);
@@ -77,7 +81,7 @@ class App extends React.Component {
           country: dataToday.sys.country,
           weather: dataToday.weather[0].main,
           description: dataToday.weather[0].description,
-          day: next5Days,
+          day: week5Days,
           dayTemperature: temp5Days,
           dayWeather: weather5Days,
           dayDescription: desc5Days,
