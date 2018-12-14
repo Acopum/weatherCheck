@@ -4,11 +4,18 @@ class Form extends React.Component {
 
   render(){
     return(
-      <form onSubmit = {this.props.getWeather}>
-        <input type = 'text' name = 'city' />
-        <input type = 'text' name = 'country' />
-        <button>Get Weather</button>
-      </form>
+      <div>
+        <form onSubmit = {this.props.getWeather}>
+          <div>
+            <input type = 'text' name = 'city' placeholder = 'City'/>
+            <input type = 'text' name = 'country' placeholder = 'Country'/>
+          </div>
+          <div>
+            <button>View Weather</button>
+          </div>
+        </form>
+        <p>{this.props.status}</p>
+      </div>
     );
   }
 };

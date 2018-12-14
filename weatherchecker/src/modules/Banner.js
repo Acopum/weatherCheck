@@ -6,7 +6,7 @@ class Banner extends React.Component {
     return(
       <div>
         <h1>Weather Check</h1>
-        <p>Check weather anywhere</p>
+        <p>Check the weather anywhere</p>
       </div>
     );
   }

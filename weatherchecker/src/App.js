@@ -1,7 +1,8 @@
 import React from 'react';
-import Banner from './modules/Banner'
-import Form from './modules/Form'
-import Forecast from './modules/Forecast'
+import Banner from './modules/Banner';
+import Form from './modules/Form';
+import ShortForecast from './modules/ShortForecast';
+import LongForecast from './modules/LongForecast';
 
 const API_KEY = '35c5931ee975680abe6b4d0fbe6c6d0f';
 
@@ -10,11 +11,14 @@ class App extends React.Component {
     super(props);
     this.state={
       temperature: null,
+      humidity: null,
+      pressure: null,
+      windspeed: null,
       city: null,
       country: null,
       weather: null,
       description: null,
-      status: null,
+      status: 'Provide a city to look up (ex/ London, CA)',
       day: [],
       dayTemperature: [],
       dayWeather: [],
@@ -77,6 +81,9 @@ class App extends React.Component {
 
         this.setState({
           temperature: dataToday.main.temp,
+          humidity: dataToday.main.humidity,
+          pressure: dataToday.main.pressure,
+          windspeed: dataToday.wind.speed,
           city: dataToday.name,
           country: dataToday.sys.country,
           weather: dataToday.weather[0].main,
@@ -85,16 +92,23 @@ class App extends React.Component {
           dayTemperature: temp5Days,
           dayWeather: weather5Days,
           dayDescription: desc5Days,
-          status: null,
+          status: ' ',
         });
       }
       else{
         this.setState({
           temperature: null,
+          humidity: null,
+          pressure: null,
+          windspeed: null,
           city: null,
           country: null,
           weather: null,
           description: null,
+          day: [],
+          dayTemperature: [],
+          dayWeather: [],
+          dayDescription: [],
           status: 'City could not be found',
         });
       }
@@ -102,10 +116,17 @@ class App extends React.Component {
     else {
       this.setState({
         temperature: null,
+        humidity: null,
+        pressure: null,
+        windspeed: null,
         city: null,
         country: null,
         weather: null,
         description: null,
+        day: [],
+        dayTemperature: [],
+        dayWeather: [],
+        dayDescription: [],
         status: 'All values not entered',
       });
     }
@@ -114,20 +135,44 @@ class App extends React.Component {
   render() {
     return(
       <div>
-        <Banner />
-        <Form getWeather = {this.getWeather}/>
-        <Forecast
-          temperature = {this.state.temperature}
-          city = {this.state.city}
-          country = {this.state.country}
-          weather = {this.state.weather}
-          description = {this.state.description}
-          status = {this.state.status}
-          day = {this.state.day}
-          dayTemperature = {this.state.dayTemperature}
-          dayWeather = {this.state.dayWeather}
-          dayDescription = {this.state.dayDescription}
-        />
+        <div className="outside">
+          <div className="main">
+            <div className="component_container">
+              <div className="row">
+                <div className="col-md-5 welcome_container">
+                  <div className = "banner_container">
+                    <Banner />
+                  </div>
+                  <div className = "form_container">
+                    <Form
+                      getWeather = {this.getWeather}
+                      status = {this.state.status}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-7 shortforecast_container">
+                  <ShortForecast
+                    temperature = {this.state.temperature}
+                    city = {this.state.city}
+                    country = {this.state.country}
+                    weather = {this.state.weather}
+                    description = {this.state.description}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12 longforecast_container">
+                  <LongForecast
+                    day = {this.state.day}
+                    dayTemperature = {this.state.dayTemperature}
+                    dayWeather = {this.state.dayWeather}
+                    dayDescription = {this.state.dayDescription}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,0 +1,47 @@
+.outside{
+  background: linear-gradient(to bottom, steelblue, grey);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main{
+  height: 90vh;
+  background: white;
+  width: 90vw;
+  margin: 0 auto;
+}
+
+.welcome_container{
+  background: black;
+  height: 50vh;
+}
+
+.banner_container{
+  background: green;
+}
+
+.form_container{
+  background: lightgrey;
+}
+
+.shortforecast_container{
+  background: red;
+  height: 50vh;
+}
+
+.longforecast_container{
+  background: yellow;
+  height: 40vh;
+}
+
+.longforecast_day_container{
+  width: 19%;
+  height: 39vh;
+  border: 5px solid black;
+  border-radius: 20px;
+  border-style: outset;
+  margin: 5px 5px 0px 5px;
+  text-align: center;
+}
