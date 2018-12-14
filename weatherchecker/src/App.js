@@ -4,11 +4,13 @@ import Form from './modules/Form';
 import ShortForecast from './modules/ShortForecast';
 import LongForecast from './modules/LongForecast';
 
+//api key for openweathermaps
 const API_KEY = '35c5931ee975680abe6b4d0fbe6c6d0f';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    //state holds info from api calls for both current forecast and 5day forecast
     this.state={
       temperature: null,
       humidity: null,
@@ -27,22 +29,23 @@ class App extends React.Component {
     this.getWeather = this.getWeather.bind(this);
   };
 
+  //run call to openweather maps and receive forecast after button press
   async getWeather(e) {
+    //prevent page reload (default behaviour) on form submit
     e.preventDefault();
 
     const city = e.target.elements.city.value;
     const country = e.target.elements.country.value;
-
+    //api call for current forecast
     const callToday = await fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city},${country}&APPID=${API_KEY}`);
     const dataToday = await callToday.json();
-
+    //api call for 5 day forecast
     const call5Day = await fetch (`http://api.openweathermap.org/data/2.5/forecast?units=metric&q=${city},${country}&APPID=${API_KEY}`);
     const data5Day = await call5Day.json();
 
-    console.log(dataToday);
-    console.log(data5Day);
-
+    //check if input exists from form
     if(city && country){
+      //if successful api call, object should exist
       if(dataToday.main){
         let counter = 0;
         let dateDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -52,15 +55,19 @@ class App extends React.Component {
         let weather5Days = [];
         let desc5Days = [];
 
+        //need to get date when checking for future dates on 5day forecast
         let now = new Date();
         let today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+(now.getDate());
+        //marks if todays date already found when searching object
         let todayNotFound = true;
 
         for(let i=0; i<data5Day.list.length;i++){
+          //break loop if found 5 dates
           if(counter === 5){
             break;
           }
           if(i < 5){
+            //check if 5day forecast returns todays date or tomorrows date first
             if(data5Day.list[i].dt_txt.startsWith(today) && todayNotFound){
               week5Days.push(dateDays[now.getDay()])
               next5Days.push(today);
@@ -74,6 +81,7 @@ class App extends React.Component {
               next5Days.push(tomorrow);
             }
           }
+          //take found day and get weather info from corresponding JSON string
           if(data5Day.list[i].dt_txt.startsWith(next5Days[counter])){
             temp5Days.push(data5Day.list[i].main.temp);
             weather5Days.push(data5Day.list[i].weather[0].icon);
@@ -82,12 +90,7 @@ class App extends React.Component {
           }
         }
 
-        console.log(week5Days);
-        console.log(next5Days);
-        console.log(temp5Days);
-        console.log(weather5Days);
-        console.log(desc5Days);
-
+        //after set state of component to hold found weather data
         this.setState({
           temperature: dataToday.main.temp,
           humidity: dataToday.main.humidity,
