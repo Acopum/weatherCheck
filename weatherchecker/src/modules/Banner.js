@@ -4,9 +4,9 @@ class Banner extends React.Component {
 
   render(){
     return(
-      <div>
+      <div className = "banner_content">
         <h1>Weather Check</h1>
-        <p>Check the weather anywhere</p>
+        <p>Check the weather in any city.</p>
       </div>
     );
   }

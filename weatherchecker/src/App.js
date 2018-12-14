@@ -14,8 +14,8 @@ class App extends React.Component {
       humidity: null,
       pressure: null,
       windspeed: null,
-      city: null,
-      country: null,
+      city: 'Thunder Bay',
+      country: 'CA',
       weather: null,
       description: null,
       status: 'Provide a city to look up (ex/ London, CA)',
@@ -29,8 +29,10 @@ class App extends React.Component {
 
   async getWeather(e) {
     e.preventDefault();
+
     const city = e.target.elements.city.value;
     const country = e.target.elements.country.value;
+
     const callToday = await fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city},${country}&APPID=${API_KEY}`);
     const dataToday = await callToday.json();
 
@@ -40,34 +42,41 @@ class App extends React.Component {
     console.log(dataToday);
     console.log(data5Day);
 
-    let next5Days = [];
-    let now = new Date();
-    let today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+(now.getDate());
-    console.log(today);
-
     if(city && country){
       if(dataToday.main){
         let counter = 0;
         let dateDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let next5Days = [];
         let week5Days = [];
         let temp5Days = [];
         let weather5Days = [];
         let desc5Days = [];
+
+        let now = new Date();
+        let today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+(now.getDate());
+        let todayNotFound = true;
 
         for(let i=0; i<data5Day.list.length;i++){
           if(counter === 5){
             break;
           }
           if(i < 5){
-            let next = new Date(now);
-            next.setDate(now.getDate()+i);
-            let tomorrow = next.getFullYear()+'-'+(next.getMonth()+1)+'-'+(next.getDate());
-            week5Days.push(dateDays[next.getDay()])
-            next5Days.push(tomorrow);
+            if(data5Day.list[i].dt_txt.startsWith(today) && todayNotFound){
+              week5Days.push(dateDays[now.getDay()])
+              next5Days.push(today);
+              todayNotFound = false;
+            }
+            else{
+              let next = new Date(now);
+              next.setDate(now.getDate()+(i+1));
+              let tomorrow = next.getFullYear()+'-'+(next.getMonth()+1)+'-'+(next.getDate());
+              week5Days.push(dateDays[next.getDay()])
+              next5Days.push(tomorrow);
+            }
           }
           if(data5Day.list[i].dt_txt.startsWith(next5Days[counter])){
             temp5Days.push(data5Day.list[i].main.temp);
-            weather5Days.push(data5Day.list[i].weather[0].main);
+            weather5Days.push(data5Day.list[i].weather[0].icon);
             desc5Days.push(data5Day.list[i].weather[0].description);
             counter++;
           }
@@ -86,7 +95,7 @@ class App extends React.Component {
           windspeed: dataToday.wind.speed,
           city: dataToday.name,
           country: dataToday.sys.country,
-          weather: dataToday.weather[0].main,
+          weather: dataToday.weather[0].icon,
           description: dataToday.weather[0].description,
           day: week5Days,
           dayTemperature: temp5Days,
@@ -151,13 +160,18 @@ class App extends React.Component {
                   </div>
                 </div>
                 <div className="col-md-7 shortforecast_container">
-                  <ShortForecast
-                    temperature = {this.state.temperature}
-                    city = {this.state.city}
-                    country = {this.state.country}
-                    weather = {this.state.weather}
-                    description = {this.state.description}
-                  />
+                  <div className="shortforecast_container_inner">
+                    <ShortForecast
+                      temperature = {this.state.temperature}
+                      city = {this.state.city}
+                      country = {this.state.country}
+                      weather = {this.state.weather}
+                      description = {this.state.description}
+                      humidity = {this.state.humidity}
+                      pressure = {this.state.pressure}
+                      windspeed = {this.state.windspeed}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="row">
