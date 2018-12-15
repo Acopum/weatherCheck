@@ -19,7 +19,7 @@ The application allows users to specify a city by name and country code (ex/Toro
 
 The web application features a simple UI. Current forecast is displayed with numerous weather details, alongside with the 5 day forecast.
 
-![weather](weatherApp.png)
+![weather](weatherApp.PNG)
 
 ## API Calls
 
