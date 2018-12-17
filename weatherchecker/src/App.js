@@ -30,7 +30,7 @@ class App extends React.Component {
     this.updateWeather = this.updateWeather.bind(this);
   };
 
-  //run call to openweather maps and receive forecast after button press
+  //run call to openweather maps and receive forecast
   async getWeather(e) {
     //prevent page reload (default behaviour) on form submit
     e.preventDefault();
