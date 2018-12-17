@@ -4,10 +4,10 @@
 
 ## How to Use
 
-Clone/Download repository
-Navigate to directory in console
-npm install
-npm start weatherchecker
+* Clone/Download repository
+* Navigate to directory in console
+* npm install
+* npm start weatherchecker
 
 ## Description
 
